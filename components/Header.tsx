@@ -55,11 +55,11 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
       <header
         className={`sticky top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-white backdrop-blur-md '
-            : 'bg-white backdrop-blur-md '
+            ? 'bg-[#f8f8fd] backdrop-blur-md '
+            : 'bg-[#f8f8fd] backdrop-blur-md'
         }`}
       >
-        <div className="w-full max-w-300 mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="w-full max-w-full md:max-w-[82%] mx-auto px-6 h-16 flex items-center justify-between">
 
           {/* ── LEFT: Logo + Nav ── */}
           <div className="flex items-center gap-10">
@@ -121,17 +121,19 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
               </Link>
             )}
 
+            <div className='h-10 w-px bg-gray-300'></div>
+
             {onNavigate ? (
               <button
                 onClick={() => handleNav('signup')}
-                className="bg-[#4B6BF5] text-white text-sm font-bold px-5 py-2.5 rounded-xl border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] active:scale-95 transition-all duration-150"
+                className="bg-[#4B6BF5] text-white text-sm font-bold px-5 py-2.5 rounded-1 border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] active:scale-95 transition-all duration-150"
               >
                 Sign Up
               </button>
             ) : (
               <Link
                 href="/signup"
-                className="bg-[#4B6BF5] text-white text-sm font-bold px-5 py-2.5 rounded-xl hover:bg-[#3451D1] active:scale-95 transition-all duration-150 inline-block"
+                className="bg-[#4B6BF5] text-white text-sm font-bold px-5 py-2.5 rounded-1 hover:bg-[#3451D1] active:scale-95 transition-all duration-150 inline-block"
               >
                 Sign Up
               </Link>
@@ -161,7 +163,7 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
 
       {/* ── Mobile Drawer ── */}
       <div
-        className={`sticky top-16 left-0 right-0 w-full z-40 md:hidden bg-white border-b border-[#E5E8F0] rounded-b-3xl shadow-2xl transition-all duration-300 overflow-hidden ${
+        className={`sticky top-16 left-0 right-0 w-full z-40 md:hidden bg-white  border-[#E5E8F0] rounded-b-3xl shadow-2xl transition-all duration-300 overflow-hidden ${
           mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
