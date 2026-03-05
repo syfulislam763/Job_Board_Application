@@ -50,7 +50,7 @@ export default function Footer({ onNavigate }: FooterProps) {
 
   return (
     <footer className="bg-[#1C1C2E] text-white items-center justify-center">
-      <div className="px-6 sm:px-15 lg:px-25">
+      <div className="max-w-full md:max-w-[82%] mx-auto">
 
         {/* TOP SECTION */}
         <div className="pt-10 pb-8 md:pt-14 md:pb-12">

@@ -59,7 +59,7 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
             : 'bg-[#f8f8fd] backdrop-blur-md'
         }`}
       >
-        <div className="w-full max-w-full md:max-w-[82%] mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="w-full max-w-full md:max-w-[90%] mx-auto px-6 h-16 flex items-center justify-between">
 
           {/* ── LEFT: Logo + Nav ── */}
           <div className="flex items-center gap-10">

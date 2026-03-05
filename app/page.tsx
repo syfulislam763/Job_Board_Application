@@ -2,6 +2,10 @@
 
 import { useState } from "react"
 import Image from "next/image"
+import Footer from "@/components/Footer"
+import LatestJobsSection from "@/components/LatestJobsSection"
+import FeaturedJobsSection from "@/components/Featuredjobssection"
+import CTASection from "@/components/CTASection"
 
 const SCRATCH_UNDERLINE_SRC = "/img/Vector.png" 
 const PATTERN_SRC = "/img/Pattern.png" 
@@ -18,10 +22,11 @@ export default function HeroSection() {
   const popularSearches = ["UI Designer", "UX Researcher", "Android", "Admin"]
 
   return (
-    <section className="relative w-full bg-[#f8f8fd] overflow-hidden min-h-85 md:min-h-150">
+    <main>
+      <section className="relative w-full bg-[#f8f8fd] overflow-hidden min-h-85 md:min-h-150">
 
       
-      <div className="pointer-events-none w-full mx-auto md:max-w-[90%] h-full select-none md:block absolute inset-0 z-0">
+      <div className="pointer-events-none w-full mx-auto md:max-w-full h-full select-none md:block absolute inset-0 z-0">
         <Image
           src={PATTERN_SRC}
           alt=""
@@ -33,7 +38,7 @@ export default function HeroSection() {
 
      
       <div
-        className="hidden md:block w-full mx-auto max-w-[90%] absolute top-20 bottom-0 inset-0 z-10 pointer-events-none select-none"
+        className="hidden md:block w-full mx-auto max-w-full absolute top-20 bottom-0 inset-0 z-10 pointer-events-none select-none"
       >
         <Image
           src={PERSON_SRC}
@@ -45,7 +50,7 @@ export default function HeroSection() {
       </div>
 
       
-      <div className="relative z-20 mx-auto max-w-full md:max-w-[82%] px-6 py-10  md:py-14 md:mt-20">
+      <div className="relative z-20 mx-auto max-w-full md:max-w-[90%] px-6 py-10  md:py-14 md:mt-20">
         <div className="w-full md:w-[70%]">
 
           {/* Heading */}
@@ -181,5 +186,22 @@ export default function HeroSection() {
       </div>
 
     </section>
+
+
+    <CTASection/>
+    
+    <FeaturedJobsSection/>
+    
+    
+    <LatestJobsSection/>
+
+    <Footer onNavigate={() => {}}/> 
+
+
+
+
+
+
+    </main>
   )
 }
