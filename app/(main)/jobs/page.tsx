@@ -3,14 +3,14 @@
 import { useState } from 'react'
 import Footer from '@/components/Footer'
 
-// ─── Types ────────────────────────────────────────────────────
+
 type Page = 'home' | 'jobs' | 'login' | 'signup' | 'companies'
 
 interface JobsPageProps {
   onNavigate?: (page: Page) => void
 }
 
-// ─── Job Schema ───────────────────────────────────────────────
+
 interface Job {
   id: number
   title: string
@@ -27,7 +27,6 @@ interface Job {
   color: string
 }
 
-// ─── Data ─────────────────────────────────────────────────────
 const JOBS: Job[] = [
   {
     id: 1,
@@ -331,7 +330,7 @@ const TAG_PALETTES = [
   { bg: '#E0F7FA', text: '#00695C' },
 ]
 
-// ─── Job Card ─────────────────────────────────────────────────
+
 function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
   return (
     <button
@@ -369,7 +368,7 @@ function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
   )
 }
 
-// ─── Field + inputClass — at module level to prevent remount/focus-loss on keystroke ──
+
 function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
   return (
     <div>
@@ -386,7 +385,7 @@ function inputClass(err?: string) {
   }`
 }
 
-// ─── Apply Form ───────────────────────────────────────────────
+
 function ApplyForm({ job, onClose }: { job: Job; onClose: () => void }) {
   const [form, setForm] = useState({ name: '', email: '', resumeUrl: '', coverNote: '' })
   const [submitted, setSubmitted] = useState(false)
@@ -494,7 +493,6 @@ function ApplyForm({ job, onClose }: { job: Job; onClose: () => void }) {
   )
 }
 
-// ─── Job Detail Page ──────────────────────────────────────────
 function JobDetailPage({
   job,
   onBack,
@@ -506,7 +504,6 @@ function JobDetailPage({
 }) {
   const [showApplyForm, setShowApplyForm] = useState(false)
 
-  // Parse description: bold **text** → <strong>
   const renderDescription = (text: string) => {
     return text.split('\n').map((line, i) => {
       if (!line.trim()) return <br key={i} />
@@ -527,7 +524,6 @@ function JobDetailPage({
     <>
       <main className="min-h-screen bg-[#F5F6FA]">
 
-        {/* ── Back bar ── */}
         <div className="bg-white border-b border-[#E5E8F0]">
           <div className="max-w-300 mx-auto px-6 py-4">
             <button
@@ -545,7 +541,6 @@ function JobDetailPage({
         <div className="max-w-300 mx-auto px-6 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">
 
-            {/* ── LEFT: Job Info ── */}
             <div className="flex flex-col gap-5">
 
               {/* Header Card */}
@@ -569,7 +564,6 @@ function JobDetailPage({
                   </div>
                 </div>
 
-                {/* Meta Pills */}
                 <div className="flex flex-wrap gap-2.5 mt-5">
                   <div className="flex items-center gap-1.5 text-[12px] font-semibold text-[#6B7589] bg-[#F5F6FA] px-3 py-1.5 rounded-lg">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="#6B7589" strokeWidth="2"/><circle cx="12" cy="9" r="2.5" stroke="#6B7589" strokeWidth="2"/></svg>
@@ -588,7 +582,6 @@ function JobDetailPage({
                   </div>
                 </div>
 
-                {/* Tags */}
                 <div className="flex flex-wrap gap-2 mt-4">
                   {job.tags.map((t, i) => {
                     const p = TAG_PALETTES[i % TAG_PALETTES.length]
@@ -601,7 +594,7 @@ function JobDetailPage({
                 </div>
               </div>
 
-              {/* Description Card */}
+  
               <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
                 <h2 className="font-['Sora',sans-serif] font-bold text-[16px] text-[#0F1B2D] mb-4">Job Description</h2>
                 <div className="flex flex-col gap-1">
@@ -610,7 +603,6 @@ function JobDetailPage({
               </div>
             </div>
 
-            {/* ── RIGHT: Apply Panel ── */}
             <div className="sticky top-24">
               <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
                 {!showApplyForm ? (
@@ -680,7 +672,7 @@ function JobDetailPage({
   )
 }
 
-// ─── Jobs Page (main) ─────────────────────────────────────────
+
 export default function JobsPage({ onNavigate }: JobsPageProps) {
   const [keyword, setKeyword] = useState('')
   const [activeCategory, setActiveCategory] = useState('All')

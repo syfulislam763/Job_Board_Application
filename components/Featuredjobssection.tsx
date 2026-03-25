@@ -2,10 +2,9 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import AnimateIn from "@/components/AnimateIn"
 
-// ─────────────────────────────────────────────────────────────
-// TYPES
-// ─────────────────────────────────────────────────────────────
+
 type TagVariant = "marketing" | "design" | "business" | "technology" | "engineering" | "remote"
 
 interface Tag {
@@ -26,9 +25,7 @@ interface FeaturedJob {
   tags: Tag[]
 }
 
-// ─────────────────────────────────────────────────────────────
-// TAG STYLES — soft filled pills
-// ─────────────────────────────────────────────────────────────
+
 const tagStyles: Record<TagVariant, string> = {
   marketing:   "bg-[#fff0e8] text-[#FF8C00]",
   design:      "bg-[#e8f7f3] text-[#2EAD85]",
@@ -38,9 +35,7 @@ const tagStyles: Record<TagVariant, string> = {
   remote:      "bg-[#e8f7f3] text-[#2EAD85]",
 }
 
-// ─────────────────────────────────────────────────────────────
-// MOCK DATA
-// ─────────────────────────────────────────────────────────────
+
 const featuredJobs: FeaturedJob[] = [
   {
     id: 1,
@@ -160,21 +155,18 @@ const featuredJobs: FeaturedJob[] = [
   },
 ]
 
-// ─────────────────────────────────────────────────────────────
-// JOB CARD
-// ─────────────────────────────────────────────────────────────
+
 function FeaturedJobCard({ job }: { job: FeaturedJob }) {
   return (
     <Link
       href={`/jobs/${job.id}`}
       className={[
-        "group flex flex-col bg-white rounded-xl border border-gray-100 p-5",
-        "shadow-[0_2px_12px_rgba(0,0,0,0.05)]",
-        "hover:border-[#4640DE] hover:shadow-[0_4px_20px_rgba(70,64,222,0.10)]",
+        "group flex flex-col bg-white border border-gray-200 p-5",
+        "hover:border-[#4640DE] ",
         "transition-all duration-200 cursor-pointer h-full",
       ].join(" ")}
     >
-      {/* Top row: logo + employment badge */}
+
       <div className="flex items-start justify-between gap-2 mb-4">
         <div
           className={[
@@ -191,25 +183,21 @@ function FeaturedJobCard({ job }: { job: FeaturedJob }) {
           />
         </div>
 
-        {/* Outlined badge — no fill */}
         <span className="text-[0.7rem] font-semibold text-[#4640DE] border border-[#4640DE] rounded px-2.5 py-0.75 whitespace-nowrap shrink-0">
           {job.employmentType}
         </span>
       </div>
 
-      {/* Title */}
       <h3 className="font-bold text-[#1a1a3e] text-[0.95rem] leading-snug group-hover:text-[#4640DE] transition-colors mb-1">
         {job.title}
       </h3>
 
-      {/* Company • Location */}
       <p className="text-[0.75rem] text-gray-400 mb-3">
         {job.company}
         <span className="mx-1.5 text-gray-300">•</span>
         {job.location}
       </p>
 
-      {/* Description */}
       <p
         className="text-[0.78rem] text-gray-500 leading-relaxed mb-4 flex-1 overflow-hidden"
         style={{
@@ -222,7 +210,6 @@ function FeaturedJobCard({ job }: { job: FeaturedJob }) {
         {job.description}
       </p>
 
-      {/* Tags */}
       <div className="flex flex-wrap gap-2 mt-auto">
         {job.tags.map((tag) => (
           <span
@@ -240,70 +227,77 @@ function FeaturedJobCard({ job }: { job: FeaturedJob }) {
   )
 }
 
-// ─────────────────────────────────────────────────────────────
-// MAIN SECTION
-// ─────────────────────────────────────────────────────────────
+
 export default function FeaturedJobsSection() {
   return (
     <section className="w-full bg-white py-14 md:py-20">
       <div className="mx-auto w-full max-w-full md:max-w-[86%]">
 
-        {/* Section header */}
-        <div className="flex items-center justify-between mb-8 md:mb-10">
-          <h2 className="font-extrabold text-[1.6rem] md:text-[2rem] leading-tight">
-            <span className="text-[#1a1a3e]">Featured </span>
-            <span className="text-[#26A4FF]">jobs</span>
-          </h2>
+        <AnimateIn variant="fadeUp" duration={500} delay={0}>
+          <div className="flex items-center justify-between mb-8 md:mb-10">
+            <h2 className="font-extrabold text-[1.6rem] md:text-[2rem] leading-tight">
+              <span className="text-[#1a1a3e]">Featured </span>
+              <span className="text-[#26A4FF]">jobs</span>
+            </h2>
 
-          {/* Show all — desktop only */}
-          <Link
-            href="/jobs"
-            className="hidden md:flex items-center gap-2 text-[0.85rem] font-semibold text-[#4640DE] hover:gap-3 transition-all duration-200"
-          >
-            Show all jobs
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M5 12h14M13 6l6 6-6 6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
-        </div>
+            <Link
+              href="/jobs"
+              className="hidden md:flex items-center gap-2 text-[0.85rem] font-semibold text-[#4640DE] hover:gap-3 transition-all duration-200"
+            >
+              Show all jobs
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M5 12h14M13 6l6 6-6 6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </div>
+        </AnimateIn>
 
-        {/* ── DESKTOP — 4-column grid ── */}
         <div className="hidden md:grid md:grid-cols-4 gap-5">
-          {featuredJobs.map((job) => (
-            <FeaturedJobCard key={job.id} job={job} />
-          ))}
-        </div>
-
-        {/* ── MOBILE — horizontal scroll carousel ── */}
-        <div
-          className="md:hidden flex gap-4 overflow-x-auto pb-3 -mx-4 px-4"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none", scrollSnapType: "x mandatory" }}
-        >
-          {featuredJobs.map((job) => (
-            <div
+          {featuredJobs.map((job, i) => (
+            <AnimateIn
               key={job.id}
-              className="shrink-0 w-[75vw] max-w-70"
-              style={{ scrollSnapAlign: "start" }}
+              variant="fadeUp"
+              duration={500}
+              delay={(i % 4) * 80 + Math.floor(i / 4) * 80}
+              className=""
             >
               <FeaturedJobCard job={job} />
-            </div>
+            </AnimateIn>
           ))}
-          {/* Trailing gap so last card doesn't sit flush to screen edge */}
+        </div>
+
+        <div
+          className="md:hidden flex gap-4 overflow-x-auto pb-3 mx-4 px-4"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none", scrollSnapType: "x mandatory" }}
+        >
+          {featuredJobs.map((job, i) => (
+            <AnimateIn
+              key={job.id}
+              variant="fadeLeft"
+              duration={450}
+              delay={i * 60}
+              className="shrink-0 w-[75vw] max-w-70"
+            >
+              <FeaturedJobCard job={job} />
+            </AnimateIn>
+          ))}
+
           <div className="shrink-0 w-2" aria-hidden="true" />
         </div>
 
-        {/* Show all — mobile only */}
-        <div className="mt-6 flex md:hidden">
-          <Link
-            href="/jobs"
-            className="flex items-center gap-2 text-[0.85rem] font-semibold text-[#4640DE] hover:gap-3 transition-all duration-200"
-          >
-            Show all jobs
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path d="M5 12h14M13 6l6 6-6 6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
-        </div>
+        <AnimateIn variant="fadeUp" duration={400} delay={featuredJobs.length * 60}>
+          <div className="mt-6 flex md:hidden">
+            <Link
+              href="/jobs"
+              className="flex items-center gap-2 text-[0.85rem] font-semibold text-[#4640DE] hover:gap-3 transition-all duration-200"
+            >
+              Show all jobs
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M5 12h14M13 6l6 6-6 6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </div>
+        </AnimateIn>
 
       </div>
     </section>

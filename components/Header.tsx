@@ -34,7 +34,7 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
     setMobileMenuOpen(false)
   }
 
-  // ── Shared logo classes — hover applied to the wrapper, children react via group-hover
+
   const logoWrapperClass = 'flex items-center gap-2.5 group'
   const Logo = () => (
     <>
@@ -51,7 +51,6 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
 
   return (
     <>
-      {/* ── NAVBAR ── */}
       <header
         className={`sticky top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
           scrolled
@@ -61,10 +60,8 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
       >
         <div className="w-full max-w-full md:max-w-[90%] mx-auto px-6 h-16 flex items-center justify-between">
 
-          {/* ── LEFT: Logo + Nav ── */}
           <div className="flex items-center gap-10">
 
-            {/* Logo — rendered as component so group context is live */}
             {onNavigate ? (
               <button
                 onClick={() => handleNav('home')}
@@ -78,7 +75,6 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
               </Link>
             )}
 
-            {/* Desktop Nav */}
             <nav className="hidden md:flex items-center gap-8">
               {navLinks.map(({ label, page, href }) => (
                 onNavigate ? (
@@ -106,7 +102,6 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
             </nav>
           </div>
 
-          {/* ── RIGHT: Auth Buttons ── */}
           <div className="hidden md:flex items-center gap-3">
             {onNavigate ? (
               <button
@@ -140,7 +135,6 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
             )}
           </div>
 
-          {/* ── Mobile Hamburger ── */}
           <button
             className="md:hidden flex flex-col gap-1.25 p-2 bg-transparent border-none cursor-pointer"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -153,7 +147,7 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
         </div>
       </header>
 
-      {/* ── Mobile Overlay ── */}
+
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 bg-[#0F1B2D]/25 backdrop-blur-[3px] z-40 md:hidden"

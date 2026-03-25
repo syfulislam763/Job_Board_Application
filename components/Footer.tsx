@@ -9,7 +9,6 @@ interface FooterProps {
   onNavigate?: (page: Page) => void
 }
 
-// Maps link labels to their Page route
 const NAV_MAP: Record<string, Page> = {
   'Companies': 'companies',
   'Find Jobs': 'jobs',
@@ -28,7 +27,6 @@ export default function Footer({ onNavigate }: FooterProps) {
     }
   }
 
-  // Renders a nav link — button if navigable, plain <a> otherwise
   const NavLink = ({ label }: { label: string }) => {
     const page = NAV_MAP[label]
     if (page && onNavigate) {
@@ -52,11 +50,9 @@ export default function Footer({ onNavigate }: FooterProps) {
     <footer className="bg-[#1C1C2E] text-white items-center justify-center">
       <div className="max-w-full md:max-w-[82%] mx-auto">
 
-        {/* TOP SECTION */}
         <div className="pt-10 pb-8 md:pt-14 md:pb-12">
           <div className="flex flex-col gap-8 md:grid md:grid-cols-[1.6fr_1fr_1fr_1.8fr] md:gap-6 lg:gap-10">
 
-            {/* 1. BRAND */}
             <div>
               <button
                 onClick={() => onNavigate?.('home')}
@@ -75,10 +71,8 @@ export default function Footer({ onNavigate }: FooterProps) {
               </p>
             </div>
 
-            {/* 2 & 3. LINKS */}
             <div className="grid grid-cols-2 gap-6 md:contents">
 
-              {/* About */}
               <div>
                 <h4 className="text-[13.5px] font-bold text-white mb-4 tracking-wide">
                   About
@@ -92,7 +86,6 @@ export default function Footer({ onNavigate }: FooterProps) {
                 </ul>
               </div>
 
-              {/* Resources */}
               <div>
                 <h4 className="text-[13.5px] font-bold text-white mb-4 tracking-wide">
                   Resources
@@ -107,7 +100,6 @@ export default function Footer({ onNavigate }: FooterProps) {
               </div>
             </div>
 
-            {/* 4. NEWSLETTER */}
             <div>
               <h4 className="text-[13.5px] font-bold text-white mb-2.5 tracking-wide">
                 Get job notifications
@@ -135,10 +127,8 @@ export default function Footer({ onNavigate }: FooterProps) {
           </div>
         </div>
 
-        {/* DIVIDER */}
         <div className="h-px bg-white/8" />
 
-        {/* BOTTOM BAR */}
         <div className="py-5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[12px] text-white/30 order-2 sm:order-1">
             2021 @ QuickHire. All rights reserved.
