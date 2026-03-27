@@ -21,7 +21,6 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
     <main className="min-h-screen bg-[#F5F6FA] flex items-center justify-center px-6 py-20">
       <div className="w-full max-w-105">
 
-        {/* Logo */}
         <div className="flex items-center justify-center gap-2.5 mb-9">
           <img
             src="/img/icon.png"
@@ -33,7 +32,7 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
           </span>
         </div>
 
-        {/* Card */}
+
         <div className="bg-white border-[1.5px] border-[#E5E8F0] rounded-3xl px-8 py-9">
 
           <h1 className="font-['Sora',sans-serif] font-extrabold text-2xl text-[#0F1B2D] mb-1.5">
@@ -45,7 +44,6 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
-            {/* Email */}
             <div>
               <label className="block text-xs font-bold text-[#0F1B2D] mb-2">
                 Email address
@@ -66,7 +64,6 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
               </div>
             </div>
 
-            {/* Password */}
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-bold text-[#0F1B2D]">Password</label>
@@ -106,7 +103,6 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
               </div>
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
               className="w-full py-3.5 mt-1 bg-[#4B6BF5] text-white text-[14px] font-bold rounded-xl border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] active:scale-97 transition-all duration-150"
@@ -115,14 +111,13 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
             </button>
           </form>
 
-          {/* Divider */}
+
           <div className="flex items-center gap-3 my-5.5">
             <div className="flex-1 h-px bg-[#E5E8F0]" />
             <span className="text-xs text-[#6B7589] font-medium whitespace-nowrap">or continue with</span>
             <div className="flex-1 h-px bg-[#E5E8F0]" />
           </div>
 
-          {/* Social Buttons */}
           <div className="grid grid-cols-2 gap-2.5">
             {[
               {
@@ -156,7 +151,7 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
             ))}
           </div>
 
-          {/* Footer */}
+ 
           <p className="text-center text-[13px] text-[#6B7589] mt-5.5">
             Don&apos;t have an account?{' '}
             {onNavigate ? (

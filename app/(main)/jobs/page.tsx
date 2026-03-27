@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import Footer from '@/components/Footer'
-
+import Footer from '@/components/Footer';
+import JobDetailPage from '@/components/jobs/JobDetailPage';
+import JobCard from '@/components/jobs/JobCard';
 
 type Page = 'home' | 'jobs' | 'login' | 'signup' | 'companies'
 
@@ -331,347 +332,6 @@ const TAG_PALETTES = [
 ]
 
 
-function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className="bg-white border border-[#E2E8F0] rounded-2xl p-5 text-left w-full transition-all duration-200 hover:shadow-[0_4px_24px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 hover:border-[#C7D2FE] cursor-pointer"
-    >
-      <div className="flex items-start justify-between mb-5">
-        <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: job.color + '18' }}>
-          <span className="font-['Sora',sans-serif] text-[18px] font-extrabold" style={{ color: job.color }}>{job.initial}</span>
-        </div>
-        <span className="text-[12px] font-semibold text-[#4B6BF5] border border-[#4B6BF5] rounded-lg px-3 py-1 whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif]">
-          {job.type}
-        </span>
-      </div>
-      <div className="font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[15px] text-[#0F1B2D] mb-1">{job.title}</div>
-      <div className="flex items-center gap-1.5 text-[13px] text-[#6B7589] font-medium mb-3">
-        <span>{job.company}</span>
-        <span className="text-[#C8CDD8] text-[10px]">●</span>
-        <span>{job.location}</span>
-      </div>
-      <p className="text-[13px] text-[#8E97A8] leading-relaxed mb-4 line-clamp-2">
-        {job.description.split('\n')[0]}
-      </p>
-      <div className="flex flex-wrap gap-2">
-        {job.tags.slice(0, 3).map((t, i) => {
-          const p = TAG_PALETTES[i % TAG_PALETTES.length]
-          return (
-            <span key={t} className="text-[12px] font-semibold px-3 py-1 rounded-full whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif]" style={{ background: p.bg, color: p.text }}>
-              {t}
-            </span>
-          )
-        })}
-      </div>
-    </button>
-  )
-}
-
-
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
-  return (
-    <div>
-      <label className="block text-xs font-bold text-[#0F1B2D] mb-2">{label}</label>
-      {children}
-      {error && <p className="text-[11px] text-red-500 mt-1">{error}</p>}
-    </div>
-  )
-}
-
-function inputClass(err?: string) {
-  return `w-full px-4 py-3 text-[14px] font-medium text-[#0F1B2D] font-['Plus_Jakarta_Sans',sans-serif] placeholder:text-[#9AA5B4] bg-white border rounded-xl outline-none transition-colors ${
-    err ? 'border-red-400 focus:border-red-500' : 'border-[#E5E8F0] focus:border-[#4B6BF5]'
-  }`
-}
-
-
-function ApplyForm({ job, onClose }: { job: Job; onClose: () => void }) {
-  const [form, setForm] = useState({ name: '', email: '', resumeUrl: '', coverNote: '' })
-  const [submitted, setSubmitted] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
-
-  const validate = () => {
-    const e: Record<string, string> = {}
-    if (!form.name.trim()) e.name = 'Name is required'
-    if (!form.email.trim()) e.email = 'Email is required'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Enter a valid email'
-    if (!form.resumeUrl.trim()) e.resumeUrl = 'Resume URL is required'
-    else if (!/^https?:\/\//.test(form.resumeUrl)) e.resumeUrl = 'Must start with http:// or https://'
-    if (!form.coverNote.trim()) e.coverNote = 'Cover note is required'
-    return e
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    const e2 = validate()
-    if (Object.keys(e2).length > 0) { setErrors(e2); return }
-    setSubmitted(true)
-  }
-
-  if (submitted) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="w-16 h-16 rounded-full bg-[#E8F5E9] flex items-center justify-center mb-4">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M20 6L9 17l-5-5" stroke="#2E7D32" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-        <h3 className="font-['Sora',sans-serif] font-bold text-[18px] text-[#0F1B2D] mb-2">Application Sent!</h3>
-        <p className="text-[13px] text-[#6B7589] max-w-72 leading-relaxed mb-6">
-          Your application for <strong>{job.title}</strong> at {job.company} has been submitted. We'll be in touch soon.
-        </p>
-        <button
-          onClick={onClose}
-          className="bg-[#4B6BF5] text-white text-[14px] font-bold px-8 py-3 rounded-xl border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] transition-colors"
-        >
-          Back to Job
-        </button>
-      </div>
-    )
-  }
-
-
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <Field label="Full Name" error={errors.name}>
-        <input
-          type="text"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          placeholder="Your full name"
-          className={inputClass(errors.name)}
-        />
-      </Field>
-
-      <Field label="Email Address" error={errors.email}>
-        <input
-          type="email"
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-          placeholder="you@example.com"
-          className={inputClass(errors.email)}
-        />
-      </Field>
-
-      <Field label="Resume Link (URL)" error={errors.resumeUrl}>
-        <input
-          type="url"
-          value={form.resumeUrl}
-          onChange={(e) => setForm({ ...form, resumeUrl: e.target.value })}
-          placeholder="https://drive.google.com/your-resume"
-          className={inputClass(errors.resumeUrl)}
-        />
-      </Field>
-
-      <Field label="Cover Note" error={errors.coverNote}>
-        <textarea
-          value={form.coverNote}
-          onChange={(e) => setForm({ ...form, coverNote: e.target.value })}
-          placeholder="Tell us why you're a great fit for this role..."
-          rows={4}
-          className={`${inputClass(errors.coverNote)} resize-none`}
-        />
-      </Field>
-
-      <div className="flex gap-3 pt-1">
-        <button
-          type="button"
-          onClick={onClose}
-          className="flex-1 py-3 text-[14px] font-bold text-[#0F1B2D] bg-transparent border-[1.5px] border-[#E5E8F0] rounded-xl cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:border-[#0F1B2D] transition-colors"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className="flex-1 py-3 text-[14px] font-bold text-white bg-[#4B6BF5] border-none rounded-xl cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] active:scale-97 transition-all"
-        >
-          Submit Application
-        </button>
-      </div>
-    </form>
-  )
-}
-
-function JobDetailPage({
-  job,
-  onBack,
-  onNavigate,
-}: {
-  job: Job
-  onBack: () => void
-  onNavigate?: (page: Page) => void
-}) {
-  const [showApplyForm, setShowApplyForm] = useState(false)
-
-  const renderDescription = (text: string) => {
-    return text.split('\n').map((line, i) => {
-      if (!line.trim()) return <br key={i} />
-      const parts = line.split(/(\*\*.*?\*\*)/g)
-      return (
-        <p key={i} className="text-[14px] text-[#4A5568] leading-relaxed">
-          {parts.map((part, j) =>
-            part.startsWith('**') && part.endsWith('**')
-              ? <strong key={j} className="font-bold text-[#0F1B2D]">{part.slice(2, -2)}</strong>
-              : part
-          )}
-        </p>
-      )
-    })
-  }
-
-  return (
-    <>
-      <main className="min-h-screen bg-[#F5F6FA]">
-
-        <div className="bg-white border-b border-[#E5E8F0]">
-          <div className="max-w-300 mx-auto px-6 py-4">
-            <button
-              onClick={onBack}
-              className="flex items-center gap-2 text-[13px] font-semibold text-[#6B7589] bg-transparent border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:text-[#0F1B2D] transition-colors"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Back to Jobs
-            </button>
-          </div>
-        </div>
-
-        <div className="max-w-300 mx-auto px-6 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">
-
-            <div className="flex flex-col gap-5">
-
-              {/* Header Card */}
-              <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0" style={{ background: job.color + '18' }}>
-                    <span className="font-['Sora',sans-serif] text-[22px] font-extrabold" style={{ color: job.color }}>{job.initial}</span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-start justify-between gap-3 mb-1">
-                      <h1 className="font-['Sora',sans-serif] font-extrabold text-[22px] text-[#0F1B2D]">{job.title}</h1>
-                      <span className="text-[12px] font-semibold text-[#4B6BF5] border border-[#4B6BF5] rounded-lg px-3 py-1 whitespace-nowrap shrink-0">
-                        {job.type}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-[14px] text-[#6B7589] font-medium">
-                      <span className="font-semibold text-[#0F1B2D]">{job.company}</span>
-                      <span className="text-[#C8CDD8] text-[10px]">●</span>
-                      <span>{job.location}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2.5 mt-5">
-                  <div className="flex items-center gap-1.5 text-[12px] font-semibold text-[#6B7589] bg-[#F5F6FA] px-3 py-1.5 rounded-lg">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="#6B7589" strokeWidth="2"/><circle cx="12" cy="9" r="2.5" stroke="#6B7589" strokeWidth="2"/></svg>
-                    {job.location}
-                  </div>
-                  <div className="flex items-center gap-1.5 text-[12px] font-semibold text-[#6B7589] bg-[#F5F6FA] px-3 py-1.5 rounded-lg">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2v10l4 2" stroke="#6B7589" strokeWidth="2" strokeLinecap="round"/><circle cx="12" cy="12" r="10" stroke="#6B7589" strokeWidth="2"/></svg>
-                    {new Date(job.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                  </div>
-                  <div className="flex items-center gap-1.5 text-[12px] font-semibold text-[#4B6BF5] bg-[#EEF1FF] px-3 py-1.5 rounded-lg">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M12 2v10l4 2" stroke="#4B6BF5" strokeWidth="2" strokeLinecap="round"/><rect x="2" y="7" width="20" height="14" rx="2" stroke="#4B6BF5" strokeWidth="2"/></svg>
-                    {job.salary}
-                  </div>
-                  <div className="flex items-center gap-1.5 text-[12px] font-semibold text-[#6B7589] bg-[#F5F6FA] px-3 py-1.5 rounded-lg">
-                    {job.category}
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {job.tags.map((t, i) => {
-                    const p = TAG_PALETTES[i % TAG_PALETTES.length]
-                    return (
-                      <span key={t} className="text-[12px] font-semibold px-3 py-1 rounded-full font-['Plus_Jakarta_Sans',sans-serif]" style={{ background: p.bg, color: p.text }}>
-                        {t}
-                      </span>
-                    )
-                  })}
-                </div>
-              </div>
-
-  
-              <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
-                <h2 className="font-['Sora',sans-serif] font-bold text-[16px] text-[#0F1B2D] mb-4">Job Description</h2>
-                <div className="flex flex-col gap-1">
-                  {renderDescription(job.description)}
-                </div>
-              </div>
-            </div>
-
-            <div className="sticky top-24">
-              <div className="bg-white border border-[#E2E8F0] rounded-2xl p-6">
-                {!showApplyForm ? (
-                  <>
-                    <h2 className="font-['Sora',sans-serif] font-bold text-[16px] text-[#0F1B2D] mb-1.5">
-                      Interested in this role?
-                    </h2>
-                    <p className="text-[13px] text-[#6B7589] leading-relaxed mb-5">
-                      Submit your application in minutes. The {job.company} team reviews all applications within 5 business days.
-                    </p>
-
-                    {/* Company quick info */}
-                    <div className="bg-[#F8F9FF] rounded-xl p-4 mb-5">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: job.color + '18' }}>
-                          <span className="font-['Sora',sans-serif] text-[14px] font-extrabold" style={{ color: job.color }}>{job.initial}</span>
-                        </div>
-                        <div>
-                          <div className="text-[13px] font-bold text-[#0F1B2D]">{job.company}</div>
-                          <div className="text-[11px] text-[#6B7589]">{job.location}</div>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-2">
-                        {[
-                          { label: 'Salary', value: job.salary },
-                          { label: 'Type', value: job.type },
-                          { label: 'Category', value: job.category },
-                          { label: 'Posted', value: new Date(job.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) },
-                        ].map((item) => (
-                          <div key={item.label}>
-                            <div className="text-[10px] font-bold text-[#9AA5B4] uppercase tracking-wide">{item.label}</div>
-                            <div className="text-[12px] font-semibold text-[#0F1B2D] mt-0.5">{item.value}</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => setShowApplyForm(true)}
-                      className="w-full py-3.5 bg-[#4B6BF5] text-white text-[14px] font-bold rounded-xl border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] active:scale-97 transition-all duration-150"
-                    >
-                      Apply Now
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex items-center justify-between mb-5">
-                      <h2 className="font-['Sora',sans-serif] font-bold text-[16px] text-[#0F1B2D]">Apply for this role</h2>
-                      <button
-                        onClick={() => setShowApplyForm(false)}
-                        className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#F5F6FA] border-none cursor-pointer text-[#6B7589] hover:bg-[#E5E8F0] transition-colors"
-                      >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
-                      </button>
-                    </div>
-                    <ApplyForm job={job} onClose={() => setShowApplyForm(false)} />
-                  </>
-                )}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </main>
-      <Footer onNavigate={onNavigate} />
-    </>
-  )
-}
-
 
 export default function JobsPage({ onNavigate }: JobsPageProps) {
   const [keyword, setKeyword] = useState('')
@@ -679,7 +339,6 @@ export default function JobsPage({ onNavigate }: JobsPageProps) {
   const [activeType, setActiveType] = useState('All')
   const [selectedJob, setSelectedJob] = useState<Job | null>(null)
 
-  // If a job is selected, show the detail page
   if (selectedJob) {
     return (
       <JobDetailPage
@@ -705,7 +364,6 @@ export default function JobsPage({ onNavigate }: JobsPageProps) {
     <>
       <main className="min-h-screen bg-[#F5F6FA]">
 
-        {/* ── Page Header ── */}
         <div className="bg-white border-b border-[#E5E8F0]">
           <div className="max-w-300 mx-auto px-6 py-10">
             <h1 className="font-['Sora',sans-serif] font-extrabold text-[clamp(1.6rem,3vw,2.2rem)] text-[#0F1B2D]">
@@ -715,7 +373,7 @@ export default function JobsPage({ onNavigate }: JobsPageProps) {
               {filtered.length} job{filtered.length !== 1 ? 's' : ''} available
             </p>
 
-            {/* Search Bar */}
+
             <div className="mt-6 flex flex-wrap gap-3">
               <div className="flex items-center gap-2.5 px-4 bg-white border-[1.5px] border-[#E5E8F0] rounded-[14px] flex-1 min-w-60 transition-colors focus-within:border-[#4B6BF5]">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" className="shrink-0">
@@ -744,7 +402,6 @@ export default function JobsPage({ onNavigate }: JobsPageProps) {
 
         <div className="max-w-300 mx-auto px-6 py-8">
 
-          {/* ── Filters ── */}
           <div className="flex flex-wrap gap-6 mb-7">
             <div>
               <p className="text-[11px] font-bold text-[#6B7589] uppercase tracking-widest mb-2.5">Category</p>
@@ -774,7 +431,7 @@ export default function JobsPage({ onNavigate }: JobsPageProps) {
             </div>
           </div>
 
-          {/* ── Results Grid ── */}
+
           {filtered.length > 0 ? (
             <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-5">
               {filtered.map((job) => (
