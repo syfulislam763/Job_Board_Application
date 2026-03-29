@@ -37,6 +37,8 @@ interface Job {
 }
 
 
+type AdminView = "dashboard" | "company-setup" | "post-job" | "edit-job"
+
 const INDUSTRIES = ["Technology", "Fintech", "Design Tools", "Streaming & Entertainment", "Social Media & Technology", "Productivity Software", "Marketing Software", "Travel & Hospitality", "Music & Entertainment", "Consumer Electronics", "Cloud Infrastructure", "Project Management", "Healthcare", "Education"]
 const JOB_TYPES = ["Full-time", "Part-time", "Remote", "Contract", "Internship"]
 const CATEGORIES = ["Design", "Development", "Engineering", "Product", "Marketing", "Finance", "Human Resource", "Business"]
@@ -58,11 +60,12 @@ const blankJob = (): Omit<Job, "id" | "createdAt"> => ({
   description: "", tags: [], featured: false, status: "active",
 })
 
-export default function JobFormView({ company, editJob, onSave, onCancel }: {
+export default function JobFormView({ company, editJob, onSave, onCancel, onNavigate }: {
   company: CompanyProfile | null
   editJob: Job | null
   onSave: (job: Omit<Job, "id" | "createdAt">) => void
-  onCancel: () => void
+  onCancel: () => void,
+  onNavigate: (v:AdminView) => void
 }) {
   const [form, setForm] = useState<Omit<Job, "id" | "createdAt">>(
     editJob ? { title: editJob.title, location: editJob.location, type: editJob.type, salary: editJob.salary, category: editJob.category, description: editJob.description, tags: editJob.tags, featured: editJob.featured, status: editJob.status }
@@ -83,7 +86,7 @@ export default function JobFormView({ company, editJob, onSave, onCancel }: {
             {editJob ? "Update the listing details below." : "This job will be posted under your company profile."}
           </p>
         </div>
-        {company && (
+        {company?.name && (
           <div className="flex items-center gap-2.5 bg-white border border-gray-100 rounded-xl px-3 py-2 shrink-0">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white font-black text-sm"
               style={{ backgroundColor: company.color }}>
@@ -138,13 +141,27 @@ export default function JobFormView({ company, editJob, onSave, onCancel }: {
             </svg>
             Cancel
           </button>
-          <button onClick={() => onSave(form)} disabled={!valid}
+          {company?.name ?
+
+            <button onClick={() => onSave(form)} disabled={!valid}
             className="flex items-center gap-2 bg-[#4640DE] text-white font-bold text-[0.85rem] px-8 py-3 rounded-lg hover:bg-[#3530c4] disabled:opacity-40 disabled:cursor-not-allowed transition-all">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M22 2L11 13" /><path d="M22 2L15 22 11 13 2 9l20-7z" />
             </svg>
             {editJob ? "Save Changes" : "Publish Job"}
           </button>
+
+          :
+
+          <button onClick={() => onNavigate("company-setup")}
+            className="flex items-center gap-2 bg-[#4640DE] text-white font-bold text-[0.85rem] px-8 py-3 rounded-lg hover:bg-[#3530c4] disabled:opacity-40 disabled:cursor-not-allowed transition-all">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 2L11 13" /><path d="M22 2L15 22 11 13 2 9l20-7z" />
+            </svg>
+            {"Create a company profile to post job"}
+          </button>
+        
+          }
         </div>
       </div>
     </div>

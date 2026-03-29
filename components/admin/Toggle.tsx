@@ -1,4 +1,4 @@
-
+'use client'
 
 export default function Toggle({ value, onChange, label }: { value: boolean; onChange: (v: boolean) => void; label: string }) {
   

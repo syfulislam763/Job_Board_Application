@@ -1,4 +1,4 @@
-
+'use client'
 export default function Textarea({ value, onChange, placeholder, rows = 4 }: { value: string; onChange: (v: string) => void; placeholder?: string; rows?: number }) {
   
   

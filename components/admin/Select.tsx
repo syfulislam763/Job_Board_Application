@@ -1,4 +1,4 @@
-
+'use client'
 
 export default function Select({ value, onChange, options, placeholder }: { value: string; onChange: (v: string) => void; options: string[]; placeholder?: string }) {
   

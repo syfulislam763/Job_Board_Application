@@ -1,4 +1,4 @@
-
+'use client'
 
 
 export default function TagPicker({ selected, options, onChange, max }: { selected: string[]; options: string[]; onChange: (v: string[]) => void; max?: number }) {
