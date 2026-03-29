@@ -63,6 +63,9 @@ interface JobBoardStore {
   login: (user: User, token: string) => void
   logout: () => void
 
+  company: {} | any,
+  setCompany: (company: any) => void,
+
   companies: CompanyProfile[]
   selectedCompany: CompanyProfile | null
 
@@ -121,6 +124,7 @@ const defaultMeta: JobMeta = {
   totalPages: 0,
 }
 
+
 export const useJobBoardStore = create<JobBoardStore>()(
   persist(
     (set) => ({
@@ -139,6 +143,12 @@ export const useJobBoardStore = create<JobBoardStore>()(
         set({
           auth: defaultAuth,
         }),
+      
+      company: {},
+
+      setCompany: (company:any) => {
+        return set({company})
+      },
 
       companies: [],
       selectedCompany: null,

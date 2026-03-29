@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from 'next/link';
+import { useJobBoardStore } from '@/hooks/useJobBoardStore';
+import { useRouter } from 'next/navigation';
 
-type Page = 'home' | 'jobs' | 'signin' | 'signup' | 'companies'
+type Page = 'home' | 'jobs' | 'signin' | 'signup' | 'companies' | 'dashboard'
 
 interface HeaderProps {
   activePage?: Page
@@ -12,9 +14,13 @@ interface HeaderProps {
 
 export default function Header({ activePage = 'home', onNavigate }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const authData = useJobBoardStore((s) => s.auth);
+  const logout = useJobBoardStore((s) => s.logout);
+  const router = useRouter()
 
   useEffect(() => {
+
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
@@ -102,38 +108,74 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
             </nav>
           </div>
 
-          <div className="hidden md:flex items-center gap-3">
-            {onNavigate ? (
-              <button
-                onClick={() => handleNav('signin')}
-                className="text-sm font-bold text-[#0F1B2D] bg-transparent border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:text-[#4B6BF5] transition-colors"
-              >
-                Login
-              </button>
-            ) : (
-              <Link href="/signin" className="text-sm font-bold text-[#0F1B2D] hover:text-[#4B6BF5] transition-colors">
-                Login
-              </Link>
-            )}
+          {authData.isAuthenticated? 
+          
 
-            <div className='h-10 w-px bg-gray-300'></div>
+            <div className="hidden md:flex items-center gap-3">
+              {onNavigate ? (
+                <button
+                  onClick={() => handleNav('dashboard')}
+                  className="text-sm font-bold text-[#0F1B2D] bg-transparent border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:text-[#4B6BF5] transition-colors"
+                >
+                  Dashboard
+                </button>
+              ) : (
+                <Link href="/dashboard" className="text-sm font-bold text-[#0F1B2D] hover:text-[#4B6BF5] transition-colors">
+                  Dashboard
+                </Link>
+              )}
 
-            {onNavigate ? (
+              <div className='h-10 w-px bg-gray-300'></div>
+
               <button
-                onClick={() => handleNav('signup')}
+                onClick={() => {
+                  logout();
+                  router.push("/")
+                }}
                 className="bg-[#4B6BF5] text-white text-sm font-bold px-5 py-2.5 rounded-1 border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] active:scale-95 transition-all duration-150"
               >
-                Sign Up
+                Logout
               </button>
-            ) : (
-              <Link
-                href="/signup"
-                className="bg-[#4B6BF5] text-white text-sm font-bold px-5 py-2.5 rounded-1 hover:bg-[#3451D1] active:scale-95 transition-all duration-150 inline-block"
-              >
-                Sign Up
-              </Link>
-            )}
-          </div>
+              
+            </div>
+          
+          :
+          
+            <div className="hidden md:flex items-center gap-3">
+              {onNavigate ? (
+                <button
+                  onClick={() => handleNav('signin')}
+                  className="text-sm font-bold text-[#0F1B2D] bg-transparent border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:text-[#4B6BF5] transition-colors"
+                >
+                  Login
+                </button>
+              ) : (
+                <Link href="/signin" className="text-sm font-bold text-[#0F1B2D] hover:text-[#4B6BF5] transition-colors">
+                  Login
+                </Link>
+              )}
+
+              <div className='h-10 w-px bg-gray-300'></div>
+
+              {onNavigate ? (
+                <button
+                  onClick={() => handleNav('signup')}
+                  className="bg-[#4B6BF5] text-white text-sm font-bold px-5 py-2.5 rounded-1 border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] active:scale-95 transition-all duration-150"
+                >
+                  Sign Up
+                </button>
+              ) : (
+                <Link
+                  href="/signup"
+                  className="bg-[#4B6BF5] text-white text-sm font-bold px-5 py-2.5 rounded-1 hover:bg-[#3451D1] active:scale-95 transition-all duration-150 inline-block"
+                >
+                  Sign Up
+                </Link>
+              )}
+            </div>
+          
+          
+          }
 
           <button
             className="md:hidden flex flex-col gap-1.25 p-2 bg-transparent border-none cursor-pointer"
