@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { authApi } from '@/services/auth';
 import { useJobBoardStore } from '@/hooks/useJobBoardStore';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface LoginPageProps {
   onNavigate?: (page: 'home' | 'jobs' | 'login' | 'signup' | 'companies') => void
@@ -19,6 +20,7 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
   const setLogin = useJobBoardStore((s) => s.login);
   const auth = useJobBoardStore((s) => s.auth);
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -28,6 +30,7 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
       const res = await authApi.login({ email, password })
       setLogin(res.data.user, res.data.access_token)
       console.log("success →", res.data);
+      Cookies.set("token", res.data.access_token, { expires: 7 })
       router.push("/")
  
     } catch (err: any) {
@@ -35,6 +38,8 @@ export default function LoginPage({ onNavigate }: LoginPageProps) {
 
     }
   }
+
+  //console.log("auth", auth)
 
 
   return (

@@ -20,7 +20,7 @@ interface CompanyProfile {
 }
 
 interface Job {
-  id: string
+  _id: string
   title: string
   location: string
   type: string
@@ -153,7 +153,7 @@ export default function DashboardView({ company, jobs, onNavigate, onDeleteJob, 
 
             {/* Rows */}
             {jobs.map((job, i) => (
-              <div key={job.id}
+              <div key={job._id}
                 className={["grid grid-cols-[1fr_120px_100px_80px_44px] gap-4 items-center px-5 py-4 transition-colors hover:bg-gray-50",
                   i < jobs.length - 1 ? "border-b border-gray-100" : "",
                 ].join(" ")}>
@@ -186,7 +186,7 @@ export default function DashboardView({ company, jobs, onNavigate, onDeleteJob, 
 
                 {/* Status */}
                 <select value={job.status}
-                  onChange={e => onStatusChange(job.id, e.target.value as Job["status"])}
+                  onChange={e => onStatusChange(job._id, e.target.value as Job["status"])}
                   className={["text-[0.68rem] font-bold px-2 py-1 rounded-full border-0 cursor-pointer focus:outline-none", STATUS_STYLES[job.status]].join(" ")}>
                   <option value="active">Active</option>
                   <option value="draft">Draft</option>
@@ -195,13 +195,13 @@ export default function DashboardView({ company, jobs, onNavigate, onDeleteJob, 
 
                 {/* Actions menu */}
                 <div className="relative">
-                  <button onClick={() => setOpenMenu(openMenu === job.id ? null : job.id)}
+                  <button onClick={() => setOpenMenu(openMenu === job._id ? null : job._id)}
                     className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-[#1a1a3e] transition-colors">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <circle cx="12" cy="5" r="1" fill="currentColor" /><circle cx="12" cy="12" r="1" fill="currentColor" /><circle cx="12" cy="19" r="1" fill="currentColor" />
                     </svg>
                   </button>
-                  {openMenu === job.id && (
+                  {openMenu === job._id && (
                     <div className="absolute right-0 top-9 z-20 bg-white border border-gray-100 rounded-xl shadow-lg w-36 py-1.5 overflow-hidden">
                       <button onClick={() => { onEditJob(job); setOpenMenu(null) }}
                         className="w-full flex items-center gap-2.5 px-4 py-2.5 text-[0.78rem] font-semibold text-[#1a1a3e] hover:bg-gray-50 transition-colors">
@@ -210,7 +210,7 @@ export default function DashboardView({ company, jobs, onNavigate, onDeleteJob, 
                         </svg>
                         Edit Job
                       </button>
-                      <button onClick={() => { setDeleteTarget(job.id); setOpenMenu(null) }}
+                      <button onClick={() => { setDeleteTarget(job._id); setOpenMenu(null) }}
                         className="w-full flex items-center gap-2.5 px-4 py-2.5 text-[0.78rem] font-semibold text-[#E05454] hover:bg-[#fde8e8] transition-colors">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M3 6h18M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2" />

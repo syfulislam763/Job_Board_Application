@@ -23,7 +23,7 @@ interface CompanyProfile {
 }
 
 interface Job {
-  id: string
+  _id: string
   title: string
   location: string
   type: string
@@ -55,7 +55,7 @@ const STATUS_STYLES: Record<Job["status"], string> = {
 }
 
 
-const blankJob = (): Omit<Job, "id" | "createdAt"> => ({
+const blankJob = (): Omit<Job, "_id" | "createdAt"> => ({
   title: "", location: "", type: "", salary: "", category: "",
   description: "", tags: [], featured: false, status: "active",
 })
@@ -63,11 +63,11 @@ const blankJob = (): Omit<Job, "id" | "createdAt"> => ({
 export default function JobFormView({ company, editJob, onSave, onCancel, onNavigate }: {
   company: CompanyProfile | null
   editJob: Job | null
-  onSave: (job: Omit<Job, "id" | "createdAt">) => void
+  onSave: (job: Omit<Job, "_id" | "createdAt">) => void
   onCancel: () => void,
   onNavigate: (v:AdminView) => void
 }) {
-  const [form, setForm] = useState<Omit<Job, "id" | "createdAt">>(
+  const [form, setForm] = useState<Omit<Job, "_id" | "createdAt">>(
     editJob ? { title: editJob.title, location: editJob.location, type: editJob.type, salary: editJob.salary, category: editJob.category, description: editJob.description, tags: editJob.tags, featured: editJob.featured, status: editJob.status }
             : blankJob()
   )
