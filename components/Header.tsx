@@ -20,7 +20,6 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
   const router = useRouter()
 
   useEffect(() => {
-
     const onScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', onScroll)
     return () => window.removeEventListener('scroll', onScroll)
@@ -40,7 +39,6 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
     setMobileMenuOpen(false)
   }
 
-
   const logoWrapperClass = 'flex items-center gap-2.5 group'
   const Logo = () => (
     <>
@@ -59,15 +57,12 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
     <>
       <header
         className={`sticky top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
-          scrolled
-            ? 'bg-[#f8f8fd] backdrop-blur-md '
-            : 'bg-[#f8f8fd] backdrop-blur-md'
+          scrolled ? 'bg-[#f8f8fd] backdrop-blur-md' : 'bg-[#f8f8fd] backdrop-blur-md'
         }`}
       >
         <div className="w-full max-w-full md:max-w-[90%] mx-auto px-6 h-16 flex items-center justify-between">
 
           <div className="flex items-center gap-10">
-
             {onNavigate ? (
               <button
                 onClick={() => handleNav('home')}
@@ -108,9 +103,7 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
             </nav>
           </div>
 
-          {authData.isAuthenticated? 
-          
-
+          {authData.isAuthenticated ? (
             <div className="hidden md:flex items-center gap-3">
               {onNavigate ? (
                 <button
@@ -124,23 +117,15 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
                   Dashboard
                 </Link>
               )}
-
               <div className='h-10 w-px bg-gray-300'></div>
-
               <button
-                onClick={() => {
-                  logout();
-                  router.push("/")
-                }}
+                onClick={() => { logout(); router.push("/") }}
                 className="bg-[#4B6BF5] text-white text-sm font-bold px-5 py-2.5 rounded-1 border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] active:scale-95 transition-all duration-150"
               >
                 Logout
               </button>
-              
             </div>
-          
-          :
-          
+          ) : (
             <div className="hidden md:flex items-center gap-3">
               {onNavigate ? (
                 <button
@@ -154,9 +139,7 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
                   Login
                 </Link>
               )}
-
               <div className='h-10 w-px bg-gray-300'></div>
-
               {onNavigate ? (
                 <button
                   onClick={() => handleNav('signup')}
@@ -173,9 +156,7 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
                 </Link>
               )}
             </div>
-          
-          
-          }
+          )}
 
           <button
             className="md:hidden flex flex-col gap-1.25 p-2 bg-transparent border-none cursor-pointer"
@@ -189,7 +170,6 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
         </div>
       </header>
 
-
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 bg-[#0F1B2D]/25 backdrop-blur-[3px] z-40 md:hidden"
@@ -197,9 +177,8 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
         />
       )}
 
-      {/* ── Mobile Drawer ── */}
       <div
-        className={`sticky top-16 left-0 right-0 w-full z-40 md:hidden bg-white  border-[#E5E8F0] rounded-b-3xl shadow-2xl transition-all duration-300 overflow-hidden ${
+        className={`sticky top-16 left-0 right-0 w-full z-40 md:hidden bg-white border-[#E5E8F0] rounded-b-3xl shadow-2xl transition-all duration-300 overflow-hidden ${
           mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
@@ -229,39 +208,66 @@ export default function Header({ activePage = 'home', onNavigate }: HeaderProps)
             )
           ))}
 
-          {/* Mobile Auth */}
           <div className="flex flex-col gap-2.5 pt-4">
-            {onNavigate ? (
+            {authData.isAuthenticated ? (
               <>
+                {onNavigate ? (
+                  <button
+                    onClick={() => handleNav('dashboard')}
+                    className="w-full py-3 text-sm font-bold rounded-xl border-[1.5px] border-[#E5E8F0] bg-transparent text-[#0F1B2D] cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:border-[#4B6BF5] hover:text-[#4B6BF5] transition-colors"
+                  >
+                    Dashboard
+                  </button>
+                ) : (
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full py-3 text-sm font-bold text-center rounded-xl border-[1.5px] border-[#E5E8F0] text-[#0F1B2D] hover:border-[#4B6BF5] hover:text-[#4B6BF5] transition-colors"
+                  >
+                    Dashboard
+                  </Link>
+                )}
                 <button
-                  onClick={() => handleNav('signin')}
-                  className="w-full py-3 text-sm font-bold rounded-xl border-[1.5px] border-[#E5E8F0] bg-transparent text-[#0F1B2D] cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:border-[#4B6BF5] hover:text-[#4B6BF5] transition-colors"
-                >
-                  Login
-                </button>
-                <button
-                  onClick={() => handleNav('signup')}
+                  onClick={() => { logout(); router.push("/"); setMobileMenuOpen(false); }}
                   className="w-full py-3 text-sm font-bold rounded-xl bg-[#4B6BF5] text-white border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] transition-colors"
                 >
-                  Sign Up
+                  Logout
                 </button>
               </>
             ) : (
               <>
-                <Link
-                  href="/signin"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full py-3 text-sm font-bold text-center rounded-xl border-[1.5px] border-[#E5E8F0] text-[#0F1B2D] hover:border-[#4B6BF5] hover:text-[#4B6BF5] transition-colors"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/signup"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full py-3 text-sm font-bold text-center rounded-xl bg-[#4B6BF5] text-white hover:bg-[#3451D1] transition-colors"
-                >
-                  Sign Up
-                </Link>
+                {onNavigate ? (
+                  <button
+                    onClick={() => handleNav('signin')}
+                    className="w-full py-3 text-sm font-bold rounded-xl border-[1.5px] border-[#E5E8F0] bg-transparent text-[#0F1B2D] cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:border-[#4B6BF5] hover:text-[#4B6BF5] transition-colors"
+                  >
+                    Login
+                  </button>
+                ) : (
+                  <Link
+                    href="/signin"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full py-3 text-sm font-bold text-center rounded-xl border-[1.5px] border-[#E5E8F0] text-[#0F1B2D] hover:border-[#4B6BF5] hover:text-[#4B6BF5] transition-colors"
+                  >
+                    Login
+                  </Link>
+                )}
+                {onNavigate ? (
+                  <button
+                    onClick={() => handleNav('signup')}
+                    className="w-full py-3 text-sm font-bold rounded-xl bg-[#4B6BF5] text-white border-none cursor-pointer font-['Plus_Jakarta_Sans',sans-serif] hover:bg-[#3451D1] transition-colors"
+                  >
+                    Sign Up
+                  </button>
+                ) : (
+                  <Link
+                    href="/signup"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full py-3 text-sm font-bold text-center rounded-xl bg-[#4B6BF5] text-white hover:bg-[#3451D1] transition-colors"
+                  >
+                    Sign Up
+                  </Link>
+                )}
               </>
             )}
           </div>

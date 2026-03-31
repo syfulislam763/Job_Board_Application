@@ -48,6 +48,7 @@ interface Job {
   featured: boolean
   createdAt: string
   status: "active" | "draft" | "closed"
+  companyId?: string
 }
 
 
@@ -70,104 +71,69 @@ const SEED_JOBS: Job[] = [
 
 
 export default function AdminPanel({company, jobs}: {company:CompanyProfile,jobs:Job[]}) {
-  const [view, setView]         = useState<AdminView>("dashboard")
+  const [view, setView]         = useState<AdminView>("dashboard");
+  const [saved, setSaved] = useState(false)
 //   const [company, setCompany]   = useState<CompanyProfile | null>(SEED_COMPANY)
 //   const [jobs, setJobs]         = useState<Job[]>(SEED_JOBS)
   const [editingJob, setEditingJob] = useState<Job | null>(null)
   const access_token = useJobBoardStore((s) => s.auth.token)
 
-  //create company from here
   const saveCompany = async (c: CompanyProfile) => {
-    console.log("hello", company);
-    console.log("company", c)
+    // console.log("hello", company);
+    // console.log("company", c)
+    setSaved(true)
     if(!company?.name){
-      //update company
       const res = await createCompanyAction(c)
-      console.log("saved", res)
-
+      setSaved(false)
     }else{
-      //new company setup
       if(!company._id)return;
-      updateCompanyAction(c, company?._id)
-
+      const res = await updateCompanyAction(c, company?._id)
+      setSaved(false)
     }
-  
-    //setCompany(c)
+
     
-    //setView("dashboard")
+    setView("dashboard")
   }
 
 
-  const fetchAll = async () => {
-    if(!access_token)return;
-
-
-    try{
-      const [companyRes] = await Promise.all([adminApi.own_company(access_token)])
-
-
-
-
-    }catch(err:any){
-      console.log("err", err.response.data)
-    }
-
-
-  }
-
-  
-  const getOwnCompany = async () => {
-    if (!access_token) return
-    try {
-      const res = await adminApi.own_company(access_token)
-      console.log(res.data)
-    } catch(e: any) {
-
-      console.log("err", e.response)
-    }
-  }
-
-  useEffect(() => {
-    getOwnCompany()
-  }, [access_token, view])
-
-
+ 
   //post job from here
-  const publishJob = (data: Omit<Job, "_id" | "createdAt">) => {
+  const publishJob = async (data: Omit<Job, "_id" | "createdAt" | "company">) => {
+    const payload = {...data, companyId: company?._id}
     if (editingJob) {
-      //setJobs(prev => prev.map(j => j.id === editingJob.id ? { ...editingJob, ...data } : j))
+      const res = await updateJobAction(editingJob._id, data);
       setEditingJob(null)
-
-
-      //update job
+      
+      console.log("updated job", res)
 
     } else {
-      const newJob: Job = { ...data, _id: `j${Date.now()}`, createdAt: new Date().toISOString().slice(0, 10) }
-      //setJobs(prev => [newJob, ...prev])
-
-
-      //create new job
-
+      
+        const res = await createJobAction(payload);
+        console.log("saved job", res);
 
     }
     setView("dashboard")
   }
 
-  const deleteJob = (id: string) => {
-    //setJobs(prev => prev.filter(j => j.id !== id))
-    //delete job from here
+  const deleteJob = async (id: string) => {
+    const res = await deleteJobAction(id);
+    console.log("job deleted", res);
+    //setView("dashboard")
+
   }
 
   const editJob = (job: Job) => {
-
-    //update job from here
     setEditingJob(job)
     setView("edit-job")
   }
 
-  const statusChange = (id: string, status: Job["status"]) => {
-    //update status of job 
-    //setJobs(prev => prev.map(j => j.id === id ? { ...j, status } : j))
+  const statusChange = async (id: string, status: Job["status"], job:Omit<Job, "_id" | "createdAt" | "company">) => {
+    const payload = { title: job.title, location: job.location, type: job.type, salary: job.salary, category: job.category, description: job.description, tags: job.tags, featured: job.featured, status: status }
+
+
+    const res = await updateJobAction(id, payload);
+    console.log("status changed", res);
+    setView("dashboard")
   }
 
   const navigate = (v: AdminView) => {
@@ -185,7 +151,7 @@ export default function AdminPanel({company, jobs}: {company:CompanyProfile,jobs
             onDeleteJob={deleteJob} onEditJob={editJob} onStatusChange={statusChange} />
         )}
         {(view === "company-setup") && (
-          <CompanyFormView company={company} onSave={saveCompany} />
+          <CompanyFormView saved={saved} setSaved={setSaved} company={company} onSave={saveCompany} />
         )}
         {(view === "post-job" || view === "edit-job") && (
           <JobFormView company={company} editJob={editingJob}

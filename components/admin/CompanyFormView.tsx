@@ -33,20 +33,22 @@ const ACCENT_COLORS = ["#4640DE", "#1DB954", "#FF5A5F", "#4285F4", "#0866FF", "#
 
 
 
-export default function CompanyFormView({ company, onSave }: {
+export default function CompanyFormView({ company, onSave, saved, setSaved }: {
   company: CompanyProfile | null
-  onSave: (c: CompanyProfile) => void
+  onSave: (c: CompanyProfile) => void,
+  saved: boolean,
+  setSaved: (bool:boolean) => void
 }) {
   const blank: CompanyProfile = { name: "", industry: "", location: "", size: "", founded: "", website: "", initial: "", color: "#4640DE", description: "", mission: "", tags: [], perks: [] }
   const [form, setForm] = useState<CompanyProfile>(company ?? blank)
-  const [saved, setSaved] = useState(false)
+  // const [saved, setSaved] = useState(false)
 
   const set = (patch: Partial<CompanyProfile>) => setForm(f => ({ ...f, ...patch }))
 
   const handleSave = () => {
     onSave(form)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2500)
+    // setSaved(true)
+    // setTimeout(() => setSaved(false), 2500)
   }
 
   const valid = form.name && form.industry && form.location && form.description

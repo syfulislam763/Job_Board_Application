@@ -1,4 +1,4 @@
-// app/(admin)/dashboard/page.tsx
+
 import AdminPanel from "@/components/admin/AdminPanel"
 import { cookies } from "next/headers"
 
@@ -40,10 +40,6 @@ export default async function DashboardPage() {
   if(company){
     jobs = await getJobs(token, company?._id);
   }
-  // const [company, jobs] = await Promise.all([
-  //   getCompany(token),
-  //   getJobs(token),
-  // ])
 
   
 

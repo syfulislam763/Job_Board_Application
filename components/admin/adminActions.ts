@@ -12,8 +12,7 @@ async function getToken() {
 
 export async function createCompanyAction(data: any) {
   const token  = await getToken();
-//   console.log("to", token);
-//   console.log("pay", data)
+
   const res = await fetch(`${API}/companies`, {
     method: "POST",
     headers: {
@@ -27,7 +26,7 @@ export async function createCompanyAction(data: any) {
 }
 
 export async function updateCompanyAction(data: any, id:string) {
-  await fetch(`${API}/companies/${id}`, {
+  const res = await fetch(`${API}/companies/${id}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${await getToken()}`,
@@ -36,10 +35,11 @@ export async function updateCompanyAction(data: any, id:string) {
     body: JSON.stringify(data),
   })
   revalidateTag("company",  "default")  
+  return res.json()
 }
 
 export async function createJobAction(data: any) {
-  await fetch(`${API}/jobs`, {
+  const res = await fetch(`${API}/jobs`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${await getToken()}`,
@@ -47,11 +47,12 @@ export async function createJobAction(data: any) {
     },
     body: JSON.stringify(data),
   })
-  revalidateTag("jobs",  "default")    
+  revalidateTag("jobs",  "default")  
+  return res.json()  
 }
 
 export async function updateJobAction(id: string, data: any) {
-  await fetch(`${API}/jobs/${id}`, {
+  const res = await fetch(`${API}/jobs/${id}`, {
     method: "PUT",
     headers: {
       Authorization: `Bearer ${await getToken()}`,
@@ -59,13 +60,15 @@ export async function updateJobAction(id: string, data: any) {
     },
     body: JSON.stringify(data),
   })
-  revalidateTag("jobs",  "default")
+  revalidateTag("jobs",  "default");
+  return res.json()
 }
 
 export async function deleteJobAction(id: string) {
-  await fetch(`${API}/jobs/${id}`, {
+  const res = await fetch(`${API}/jobs/${id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${await getToken()}` },
   })
-  revalidateTag("jobs",  "default")
+  revalidateTag("jobs",  "default");
+  return res.json()
 }
