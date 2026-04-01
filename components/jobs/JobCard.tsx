@@ -1,6 +1,6 @@
 'use client'
 
-
+import { useRouter } from "next/navigation"
 
 interface Job {
   id: number
@@ -28,10 +28,17 @@ const TAG_PALETTES = [
 ]
 
 
-export default function JobCard({ job, onClick }: { job: Job; onClick: () => void }) {
+export default function JobCard({ job, id, onClick }: { job: Job; id?:string, onClick?: () => void }) {
+  
+  const router = useRouter();
+
+  const handleViewJobDetails = () => {
+    router.replace(`/jobs/${id}`)
+  }
+  
   return (
     <button
-      onClick={onClick}
+      onClick={handleViewJobDetails}
       className="bg-white border border-[#E2E8F0] rounded-2xl p-5 text-left w-full transition-all duration-200 hover:shadow-[0_4px_24px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 hover:border-[#C7D2FE] cursor-pointer"
     >
       <div className="flex items-start justify-between mb-5">

@@ -76,14 +76,14 @@ const Icons = {
 }
 
 const categories: Category[] = [
-  { id: 1, label: "Design",         jobCount: 235, href: "/jobs/design",         icon: Icons.Design        },
-  { id: 2, label: "Sales",          jobCount: 756, href: "/jobs/sales",          icon: Icons.Sales         },
-  { id: 3, label: "Marketing",      jobCount: 140, href: "/jobs/marketing",      icon: Icons.Marketing, featured: false },
-  { id: 4, label: "Finance",        jobCount: 325, href: "/jobs/finance",        icon: Icons.Finance       },
-  { id: 5, label: "Technology",     jobCount: 436, href: "/jobs/technology",     icon: Icons.Technology    },
-  { id: 6, label: "Engineering",    jobCount: 542, href: "/jobs/engineering",    icon: Icons.Engineering   },
-  { id: 7, label: "Business",       jobCount: 211, href: "/jobs/business",       icon: Icons.Business      },
-  { id: 8, label: "Human Resource", jobCount: 346, href: "/jobs/human-resource", icon: Icons.HumanResource },
+  { id: 1, label: "Design",         jobCount: 235, href: "/category/design_jobs",         icon: Icons.Design        },
+  { id: 2, label: "Sales",          jobCount: 756, href: "/category/sales_jobs",          icon: Icons.Sales         },
+  { id: 3, label: "Marketing",      jobCount: 140, href: "/category/marketing_jobs",      icon: Icons.Marketing, featured: false },
+  { id: 4, label: "Finance",        jobCount: 325, href: "/category/finance_jobs",        icon: Icons.Finance       },
+  { id: 5, label: "Technology",     jobCount: 436, href: "/category/technology_jobs",     icon: Icons.Technology    },
+  { id: 6, label: "Engineering",    jobCount: 542, href: "/category/engineering_jobs",    icon: Icons.Engineering   },
+  { id: 7, label: "Business",       jobCount: 211, href: "/category/business_jobs",       icon: Icons.Business      },
+  { id: 8, label: "Human Resource", jobCount: 346, href: "/category/human-resource_jobs", icon: Icons.HumanResource },
 ]
 
 function ArrowRight({ className = "" }: { className?: string }) {
