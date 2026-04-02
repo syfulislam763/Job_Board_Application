@@ -2,20 +2,40 @@
 
 import { useRouter } from "next/navigation"
 
+interface Company {
+  _id: string
+  name: string
+  industry: string
+  location: string
+  size: string
+  founded: string
+  website: string
+  initial: string
+  color: string
+  description: string
+  mission: string
+  tags: string[]
+  perks: string[]
+  createdBy: string
+  createdAt: string
+  updatedAt: string
+}
+
 interface Job {
-  id: number
+  _id: string
   title: string
-  company: string
+  company: Company
   location: string
   category: string
   description: string
-  created_at: string
+  createdAt: string
   type: string
   salary: string
   tags: string[]
   featured: boolean
-  initial: string
-  color: string
+  status: 'active' | 'inactive'
+  createdBy: string
+  updatedAt: string
 }
 
 const TAG_PALETTES = [
@@ -42,8 +62,8 @@ export default function JobCard({ job, id, onClick }: { job: Job; id?:string, on
       className="bg-white border border-[#E2E8F0] rounded-2xl p-5 text-left w-full transition-all duration-200 hover:shadow-[0_4px_24px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 hover:border-[#C7D2FE] cursor-pointer"
     >
       <div className="flex items-start justify-between mb-5">
-        <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: job.color + '18' }}>
-          <span className="font-['Sora',sans-serif] text-[18px] font-extrabold" style={{ color: job.color }}>{job.initial}</span>
+        <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: job.company.color + '18' }}>
+          <span className="font-['Sora',sans-serif] text-[18px] font-extrabold" style={{ color: job.company.color }}>{job.company.initial}</span>
         </div>
         <span className="text-[12px] font-semibold text-[#4B6BF5] border border-[#4B6BF5] rounded-lg px-3 py-1 whitespace-nowrap font-['Plus_Jakarta_Sans',sans-serif]">
           {job.type}
@@ -51,7 +71,7 @@ export default function JobCard({ job, id, onClick }: { job: Job; id?:string, on
       </div>
       <div className="font-['Plus_Jakarta_Sans',sans-serif] font-bold text-[15px] text-[#0F1B2D] mb-1">{job.title}</div>
       <div className="flex items-center gap-1.5 text-[13px] text-[#6B7589] font-medium mb-3">
-        <span>{job.company}</span>
+        <span>{job.company.name}</span>
         <span className="text-[#C8CDD8] text-[10px]">●</span>
         <span>{job.location}</span>
       </div>

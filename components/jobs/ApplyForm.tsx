@@ -7,20 +7,40 @@ type Page = 'home' | 'jobs' | 'login' | 'signup' | 'companies'
 
 
 
+interface Company {
+  _id: string
+  name: string
+  industry: string
+  location: string
+  size: string
+  founded: string
+  website: string
+  initial: string
+  color: string
+  description: string
+  mission: string
+  tags: string[]
+  perks: string[]
+  createdBy: string
+  createdAt: string
+  updatedAt: string
+}
+
 interface Job {
-  id: number
+  _id: string
   title: string
-  company: string
+  company: Company
   location: string
   category: string
   description: string
-  created_at: string
+  createdAt: string
   type: string
   salary: string
   tags: string[]
   featured: boolean
-  initial: string
-  color: string
+  status: 'active' | 'inactive'
+  createdBy: string
+  updatedAt: string
 }
 
 
@@ -76,7 +96,7 @@ export default function ApplyForm({ job, onClose }: { job: Job; onClose: () => v
         </div>
         <h3 className="font-['Sora',sans-serif] font-bold text-[18px] text-[#0F1B2D] mb-2">Application Sent!</h3>
         <p className="text-[13px] text-[#6B7589] max-w-72 leading-relaxed mb-6">
-          Your application for <strong>{job.title}</strong> at {job.company} has been submitted. We'll be in touch soon.
+          Your application for <strong>{job?.title}</strong> at {job?.company?.name} has been submitted. We'll be in touch soon.
         </p>
         <button
           onClick={onClose}

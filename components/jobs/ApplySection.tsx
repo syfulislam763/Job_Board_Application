@@ -3,20 +3,40 @@
 import { useState } from "react"
 import ApplyForm from "./ApplyForm"
 
+interface Company {
+  _id: string
+  name: string
+  industry: string
+  location: string
+  size: string
+  founded: string
+  website: string
+  initial: string
+  color: string
+  description: string
+  mission: string
+  tags: string[]
+  perks: string[]
+  createdBy: string
+  createdAt: string
+  updatedAt: string
+}
+
 interface Job {
-  id: number
+  _id: string
   title: string
-  company: string
+  company: Company
   location: string
   category: string
   description: string
-  created_at: string
+  createdAt: string
   type: string
   salary: string
   tags: string[]
   featured: boolean
-  initial: string
-  color: string
+  status: 'active' | 'inactive'
+  createdBy: string
+  updatedAt: string
 }
 
 export default function ApplySection({ job }: { job: Job }) {
@@ -30,29 +50,29 @@ export default function ApplySection({ job }: { job: Job }) {
             Interested in this role?
           </h2>
           <p className="text-[13px] text-[#6B7589] leading-relaxed mb-5">
-            Submit your application in minutes. The {job.company} team reviews all applications within 5 business days.
+            Submit your application in minutes. The {job?.company?.name} team reviews all applications within 5 business days.
           </p>
 
           <div className="bg-[#F8F9FF] rounded-xl p-4 mb-5">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: job.color + '18' }}>
-                <span className="font-['Sora',sans-serif] text-[14px] font-extrabold" style={{ color: job.color }}>{job.initial}</span>
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ background: job?.company?.color + '18' }}>
+                <span className="font-['Sora',sans-serif] text-[14px] font-extrabold" style={{ color: job?.company?.color }}>{job?.company?.initial}</span>
               </div>
               <div>
-                <div className="text-[13px] font-bold text-[#0F1B2D]">{job.company}</div>
-                <div className="text-[11px] text-[#6B7589]">{job.location}</div>
+                <div className="text-[13px] font-bold text-[#0F1B2D]">{job?.company?.name}</div>
+                <div className="text-[11px] text-[#6B7589]">{job?.location}</div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { label: 'Salary', value: job.salary },
-                { label: 'Type', value: job.type },
-                { label: 'Category', value: job.category },
-                { label: 'Posted', value: new Date(job.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) },
+                { label: 'Salary', value: job?.salary },
+                { label: 'Type', value: job?.type },
+                { label: 'Category', value: job?.category },
+                { label: 'Posted', value: new Date(job?.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) },
               ].map((item) => (
-                <div key={item.label}>
-                  <div className="text-[10px] font-bold text-[#9AA5B4] uppercase tracking-wide">{item.label}</div>
-                  <div className="text-[12px] font-semibold text-[#0F1B2D] mt-0.5">{item.value}</div>
+                <div key={item?.label}>
+                  <div className="text-[10px] font-bold text-[#9AA5B4] uppercase tracking-wide">{item?.label}</div>
+                  <div className="text-[12px] font-semibold text-[#0F1B2D] mt-0.5">{item?.value}</div>
                 </div>
               ))}
             </div>
